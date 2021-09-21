@@ -33,6 +33,7 @@ class say_who(smach.State):
 
     def execute(self, userdata):
         rospy.loginfo('WHO?')
+        rospy.loginfo('Counter = %f' %userdata.who_counter_in)
         rospy.sleep(1.0)
         return 'who'
 
@@ -44,12 +45,12 @@ def main():
     # 出力結果と遷移先を定義
     with sm:
         smach.StateMachine.add('Say_HELLO', say_hello(), 
-                                transitions={'hello':'Say_WHO', 'bye':'good_bye'}
-                                remapping={'hello_counter_in':'sm_counter'
+                                transitions={'hello':'Say_WHO', 'bye':'good_bye'},
+                                remapping={'hello_counter_in':'sm_counter',
                                            'hello_counter_out':'sm_counter'})
         
         smach.StateMachine.add('Say_WHO', say_who(), 
-                                transitions={'who':'Say_HELLO'}
+                                transitions={'who':'Say_HELLO'},
                                 remapping={'who_counter_in':'sm_counter'})
 
     # smach viewerで見えるようにする
